@@ -1,0 +1,63 @@
+{
+  "name": "@plastic-js/tsumiki",
+  "version": "0.1.3",
+  "description": "A UI component library for Plastic JS.",
+  "license": "MIT",
+  "author": "tigre",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/plastic-js/tsumiki.git"
+  },
+  "bugs": {
+    "url": "https://github.com/plastic-js/tsumiki/issues"
+  },
+  "homepage": "https://github.com/plastic-js/tsumiki#readme",
+  "keywords": [
+    "ui",
+    "components",
+    "component-library",
+    "plastic-js"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "prepublishOnly": "npm run build",
+    "preview": "vite preview",
+    "e2e:repro": "node e2e/dlgcbx-repro.mjs"
+  },
+  "dependencies": {
+    "@emotion/css": "^11.13.5",
+    "@plastic-js/ark": "^1.0.4",
+    "@plastic-js/plastic": "^1.0.15"
+  },
+  "peerDependencies": {
+    "@zag-js/combobox": "1.40.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.29.7",
+    "@plastic-js/babel-preset-plastic": "^0.1.9",
+    "@zag-js/combobox": "1.40.0",
+    "puppeteer-core": "^25.1.0",
+    "vite": "^8.0.15"
+  }
+}
