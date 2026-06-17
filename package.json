@@ -47,15 +47,15 @@
   },
   "dependencies": {
     "@emotion/css": "^11.13.5",
-    "@plastic-js/ark": "^1.0.4",
-    "@plastic-js/plastic": "^1.0.15"
+    "@plastic-js/ark": "^1.0.6",
+    "@plastic-js/plastic": "^1.0.16"
   },
   "peerDependencies": {
     "@zag-js/combobox": "1.40.0"
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",
-    "@plastic-js/babel-preset-plastic": "^0.1.9",
+    "@plastic-js/babel-preset-plastic": "^0.1.11",
     "@zag-js/combobox": "1.40.0",
     "puppeteer-core": "^25.1.0",
     "vite": "^8.0.15"
