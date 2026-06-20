@@ -1,6 +1,6 @@
 import { css } from '@emotion/css'
 import { Dialog } from '@plastic-js/ark'
-import { splitProps } from '@plastic-js/plastic'
+import { mergeProps, splitProps } from '@plastic-js/plastic'
 import Portal from './Portal.jsx'
 import Icon from './Icon.jsx'
 
@@ -124,8 +124,7 @@ const OriginalRoot = Dialog.Root
 
 const Root = (props = {})=> {
 	const [local, rest] = splitProps(props, ['onOpen', 'onClose', 'onOpenChange', 'closeOnInteractOutside', 'lazyMount'])
-	return OriginalRoot({
-		...rest,
+	return OriginalRoot(mergeProps(rest, {
 		closeOnInteractOutside: local.closeOnInteractOutside ?? false,
 		// Defer rendering the dialog body until it is first opened, then keep it
 		// mounted. ark's Positioner gates its subtree on this via presence strategy.
@@ -134,7 +133,7 @@ const Root = (props = {})=> {
 			local.onOpenChange?.(open)
 			if (open){ local.onOpen?.() } else { local.onClose?.() }
 		},
-	})
+	}))
 }
 
 const Preset = (props)=> {
