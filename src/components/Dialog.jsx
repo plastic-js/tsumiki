@@ -9,7 +9,6 @@ const backdropClass = css({
 	inset: 0,
 	background: 'rgba(0, 0, 0, 0.6)',
 	backdropFilter: 'blur(4px)',
-	zIndex: 9998,
 	'&[hidden]': { display: 'none' },
 })
 
@@ -19,7 +18,6 @@ const positionerClass = css({
 	display: 'flex',
 	alignItems: 'flex-end',
 	justifyContent: 'center',
-	zIndex: 9999,
 	'@media (min-width: 640px)': {
 		alignItems: 'center',
 		padding: '24px',
