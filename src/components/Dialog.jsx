@@ -121,8 +121,9 @@ const btnPrimaryClass = css({
 const OriginalRoot = Dialog.Root
 
 const Root = (props = {})=> {
-	const [local, rest] = splitProps(props, ['onOpen', 'onClose', 'onOpenChange', 'closeOnInteractOutside', 'lazyMount'])
+	const [local, rest] = splitProps(props, ['onOpen', 'onClose', 'onOpenChange', 'closeOnInteractOutside', 'lazyMount', 'zIndex'])
 	return OriginalRoot(mergeProps(rest, {
+		zIndex: local.zIndex ?? null,
 		closeOnInteractOutside: local.closeOnInteractOutside ?? false,
 		// Defer rendering the dialog body until it is first opened, then keep it
 		// mounted. ark's Positioner gates its subtree on this via presence strategy.
