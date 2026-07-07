@@ -122,7 +122,7 @@ const OriginalRoot = Dialog.Root
 
 const Root = (props = {})=> {
 	const [local, rest] = splitProps(props, ['onOpen', 'onClose', 'onOpenChange', 'closeOnInteractOutside', 'lazyMount', 'zIndex'])
-	return OriginalRoot(mergeProps(rest, {
+	return <OriginalRoot {...mergeProps(rest, {
 		zIndex: local.zIndex ?? null,
 		closeOnInteractOutside: local.closeOnInteractOutside ?? false,
 		// Defer rendering the dialog body until it is first opened, then keep it
@@ -132,7 +132,7 @@ const Root = (props = {})=> {
 			local.onOpenChange?.(open)
 			if (open){ local.onOpen?.() } else { local.onClose?.() }
 		},
-	}))
+	})} />
 }
 
 const Preset = (props)=> {
