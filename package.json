@@ -47,8 +47,8 @@
   },
   "dependencies": {
     "@emotion/css": "^11.13.5",
-    "@plastic-js/ark": "^1.0.6",
-    "@plastic-js/plastic": "^1.0.17"
+    "@plastic-js/ark": "^1.0.12",
+    "@plastic-js/plastic": "^1.0.22"
   },
   "peerDependencies": {
     "@zag-js/combobox": "1.40.0"
