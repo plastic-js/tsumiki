@@ -43,6 +43,16 @@ const Root = (props = {})=> {
 	const itemToString = local.itemToString ?? defaultItemToString
 	const filter = local.filter ?? defaultFilter
 
+	// zag-js/combobox expects value to be an array (it calls .join(",")).
+	// Single-select means a 0‑ or 1‑element array.
+	const rawValue = access(rest.value)
+	const normalizedValue = rawValue == null ? [] : [rawValue]
+
+	const handleValueChange = (value)=> {
+		const v = value.length >= 1 ? value[0] : null
+		rest.onValueChange?.(v)
+	}
+
 	// Internal query mirrors the input. We seed it from any `inputValue` the
 	// caller passed so an initial/controlled value still filters correctly.
 	const query = createSignal(access(local.inputValue) ?? '')
@@ -65,6 +75,8 @@ const Root = (props = {})=> {
 		<FilterContext.Provider value={filteredItems}>
 			<Combobox.Root
 				{...rest}
+				value={normalizedValue}
+				onValueChange={handleValueChange}
 				collection={collection}
 				inputValue={query}
 				onInputValueChange={(value)=> {
