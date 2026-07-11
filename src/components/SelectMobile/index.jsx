@@ -223,16 +223,29 @@ const Root = (props)=> {
 
 // <SelectMobile.Trigger> — the button that opens the sheet. Shows the selected
 // item's label (or `placeholder`). Pass children to fully customize.
+//
+// NOTE: Uses <div role="button"> instead of a native <button> as a
+// defense-in-depth measure against a Chrome iOS (WebKit) focus-lock bug.
+//
+// The primary fix is in <SelectMobile.Content>: the sheet is rendered inline
+// (no <Portal>) so it stays inside the parent Dialog's focus-trap boundary.
+// However, the <div role="button"> is kept as an additional safeguard — in
+// WebKit, tapping a <button> inside a scrollable container with
+// -webkit-overflow-scrolling:touch can pin activeElement to the button,
+// causing subsequent focus() calls on the filter <input> to be silently
+// ignored. A <div role="button"> is semantically equivalent for accessibility
+// but does not trigger this WebKit focus-lock behaviour.
 const Trigger = (props)=> {
 	const ctx = useSelectMobile()
 	const [local, rest] = splitProps(props, ['placeholder', 'className', 'children'])
 
 	return (
-		<button
+		<div
 			{...part('trigger')}
 			className={`${triggerClass} ${local.className || ''}`}
 			onClick={()=> ctx.open(true)}
-			type='button'
+			role='button'
+			tabIndex={0}
 			{...rest}
 		>
 			{local.children ?? (
@@ -251,7 +264,7 @@ const Trigger = (props)=> {
 					</span>
 				</>
 			)}
-		</button>
+		</div>
 	)
 }
 
@@ -290,42 +303,46 @@ const Item = (props)=> {
 //   clearLabel        label for the clear row  (default "None")
 //   backdropClassName className passed to the backdrop (higher priority)
 //   backdropStyle     inline style passed to the backdrop (higher priority)
+//
+// NOTE: No <Portal> wrapper. The overlay uses `position: fixed; inset: 0;
+// z-index: 1000` so it still covers the viewport without being portaled to
+// document.body. Rendering inline keeps the sheet inside the nearest focus-trap
+// boundary (e.g. a parent Dialog), which prevents zag-js / ark focus traps from
+// fighting the filter input's auto-focus. This is the primary fix for the
+// Chrome iOS focus-lock bug when SelectMobile is nested inside a Dialog.
 const Content = (props)=> {
 	const ctx = useSelectMobile()
 	const [local, rest] = splitProps(props, [
 		'clearable', 'clearLabel', 'className',
 		'backdropClassName', 'backdropStyle', 'children',
 	])
-
 	return (
-		<Portal>
-			<div
-				{...part('positioner')}
-				aria-hidden={()=> !ctx.open()}
-				className={`${overlayClass} ${ctx.open() ? openClass : ''}`}
-			>
-				<div {...part('backdrop')} className={`${backdropClass} ${local.backdropClassName || ''}`} style={local.backdropStyle} onClick={()=> ctx.open(false)} />
-				<div {...part('content')} className={`${sheetClass} ${local.className || ''}`} role='dialog' {...rest}>
-					<div {...part('grabber')} className={grabberClass} onClick={()=> ctx.open(false)}>
-						<span className={grabberBarClass} />
-					</div>
-					<div {...part('list')} className={listClass}>
-						{local.children ?? (
-							<>
-								{()=> local.clearable && (
-									<Item value=''>
-										{local.clearLabel ?? 'None'}
-									</Item>
-								)}
-								<Loop each={ctx.items}>
-									{item=> <Item item={item} key={ctx.itemToValue(item)} />}
-								</Loop>
-							</>
-						)}
-					</div>
+		<div
+			{...part('positioner')}
+			aria-hidden={()=> !ctx.open()}
+			className={`${overlayClass} ${ctx.open() ? openClass : ''}`}
+		>
+			<div {...part('backdrop')} className={`${backdropClass} ${local.backdropClassName || ''}`} style={local.backdropStyle} onClick={()=> ctx.open(false)} />
+			<div {...part('content')} className={`${sheetClass} ${local.className || ''}`} role='dialog' {...rest}>
+				<div {...part('grabber')} className={grabberClass} onClick={()=> ctx.open(false)}>
+					<span className={grabberBarClass} />
+				</div>
+				<div {...part('list')} className={listClass}>
+					{local.children ?? (
+						<>
+							{()=> local.clearable && (
+								<Item value=''>
+									{local.clearLabel ?? 'None'}
+								</Item>
+							)}
+							<Loop each={ctx.items}>
+								{item=> <Item item={item} key={ctx.itemToValue(item)} />}
+							</Loop>
+						</>
+					)}
 				</div>
 			</div>
-		</Portal>
+		</div>
 	)
 }
 
