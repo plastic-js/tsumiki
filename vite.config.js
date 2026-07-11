@@ -19,49 +19,56 @@ const plasticJsx = ()=> ({
 	},
 })
 
-export default defineConfig({
-	root: __dirname,
-	cacheDir: resolve(__dirname, '.vite-cache'),
-	plugins: [plasticJsx()],
-	build: {
-		minify: false,
-		sourcemap: true,
-		target: 'esnext',
-		lib: {
-			entry: resolve(__dirname, 'src/index.js'),
-			formats: ['es'],
-			fileName: 'index',
-		},
-		rollupOptions: {
-			external: [
-				/^@plastic-js\/plastic(?:\/.*)?$/,
-				/^@plastic-js\/ark(?:\/.*)?$/,
-				/^@emotion\/css(?:\/.*)?$/,
-				/^@zag-js\/combobox(?:\/.*)?$/,
-				/^alien-signals(?:\/.*)?$/,
-			],
-			output: {
-				preserveModules: true,
-				preserveModulesRoot: 'src',
-				entryFileNames: '[name].js',
-				chunkFileNames: 'chunks/[name].js',
-				assetFileNames: 'assets/[name][extname]',
+export default defineConfig(({ command })=> {
+	const isDev = command === 'serve'
+
+	return {
+		root: isDev ? resolve(__dirname, 'showcase') : __dirname,
+		publicDir: isDev ? false : undefined,
+		cacheDir: resolve(__dirname, '.vite-cache'),
+		plugins: [plasticJsx()],
+		build: isDev
+			? undefined
+			: {
+				minify: false,
+				sourcemap: true,
+				target: 'esnext',
+				lib: {
+					entry: resolve(__dirname, 'src/index.js'),
+					formats: ['es'],
+					fileName: 'index',
+				},
+				rollupOptions: {
+					external: [
+						/^@plastic-js\/plastic(?:\/.*)?$/,
+						/^@plastic-js\/ark(?:\/.*)?$/,
+						/^@emotion\/css(?:\/.*)?$/,
+						/^@zag-js\/combobox(?:\/.*)?$/,
+						/^alien-signals(?:\/.*)?$/,
+					],
+					output: {
+						preserveModules: true,
+						preserveModulesRoot: 'src',
+						entryFileNames: '[name].js',
+						chunkFileNames: 'chunks/[name].js',
+						assetFileNames: 'assets/[name][extname]',
+					},
+				},
 			},
+		esbuild: {
+			include: /\.[jt]sx?$/,
+			exclude: /\.jsx$/,
 		},
-	},
-	esbuild: {
-		include: /\.[jt]sx?$/,
-		exclude: /\.jsx$/,
-	},
-	resolve: {
-		dedupe: ['@plastic-js/plastic', '@plastic-js/ark', 'alien-signals'],
-	},
-	optimizeDeps: {
-		noDiscovery: true,
-		include: [],
-	},
-	server: {
-		port: 4455,
-		open: true,
-	},
+		resolve: {
+			dedupe: ['@plastic-js/plastic', '@plastic-js/ark', 'alien-signals'],
+		},
+		optimizeDeps: {
+			noDiscovery: true,
+			include: [],
+		},
+		server: {
+			port: 4455,
+			open: true,
+		},
+	}
 })
