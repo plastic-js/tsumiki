@@ -4,7 +4,7 @@ import {
 } from '@plastic-js/plastic'
 import { collection as createCollection } from '@zag-js/combobox'
 
-// FilteredSelect — a filterable single-select built on the pure `Combobox`
+// FilterableSelect — a filterable single-select built on the pure `Combobox`
 // primitive's underlying headless machine.
 //
 // This file owns two things:
@@ -13,7 +13,7 @@ import { collection as createCollection } from '@zag-js/combobox'
 //      down as the user types. The internal <Root> keeps a query in sync with the
 //      input, filters the list and feeds a reactive collection back to the
 //      headless Root.
-//   2. The public API / contract. The default-exported <FilteredSelect> assembles
+//   2. The public API / contract. The default-exported <FilterableSelect> assembles
 //      the full structure (label, control, input, trigger, content, items) and
 //      exposes a flat prop API. It is intentionally style-agnostic: every visual
 //      slot is themed through the `classNames` map, so the styling layer
@@ -162,7 +162,7 @@ function CheckIcon(){
 // Public component. `classNames` themes each slot (control/input/trigger/content/
 // empty/item/itemText/check/label); anything not split here (e.g. `filter`,
 // `name`) flows through to the filter Root.
-const FilteredSelect = (props = {})=> {
+const FilterableSelect = (props = {})=> {
 	const [local, rest] = splitProps(props, [
 		'items',
 		'itemToString',
@@ -223,4 +223,4 @@ const FilteredSelect = (props = {})=> {
 	)
 }
 
-export default FilteredSelect
+export default FilterableSelect
