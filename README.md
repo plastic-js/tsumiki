@@ -65,6 +65,12 @@ function Example(){
 | `className` | `string` | — | CSS class for the trigger button |
 | `children` | `node` | — | Custom trigger content (replaces default label + chevron) |
 
+> **Note on Trigger element:** The trigger renders `<div role="button" tabIndex={0}>` instead of a native `<button>` as a defense-in-depth measure against a **Chrome iOS (WebKit) focus-lock bug**.
+>
+> The primary fix is in `SelectMobile.Content`: the sheet is rendered inline (no `<Portal>`) so it stays inside the parent Dialog's focus-trap boundary. However, the `<div role="button">` is kept as an additional safeguard — in WebKit, tapping a `<button>` inside a scrollable container with `-webkit-overflow-scrolling: touch` can pin `activeElement` to the button, causing subsequent `focus()` calls on the filter `<input>` to be silently ignored. A `<div role="button">` is semantically equivalent for accessibility but does not trigger this WebKit focus-lock behaviour.
+>
+> Typically a native `<button>` would be preferred for keyboard tab navigation (`tabIndex` works natively). On mobile, however, keyboard tab navigation is irrelevant — the sheet is operated via touch, and the Escape key for closing is handled by the `Dialog`-like overlay, not by tab order. The `tabIndex={0}` on the `<div>` preserves keyboard discoverability for assistive technology while working around the iOS focus trap.
+
 **SelectMobile.Content props:**
 
 | Prop | Type | Default | Description |
