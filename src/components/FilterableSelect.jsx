@@ -159,6 +159,43 @@ function CheckIcon(){
 	)
 }
 
+function XIcon(){
+	return (
+		<svg
+			fill='none' stroke='currentColor' strokeLinecap='round' strokeLinejoin='round'
+			strokeWidth='2' viewBox='0 0 24 24'
+		>
+			<line x1='18' y1='6' x2='6' y2='18' />
+			<line x1='6' y1='6' x2='18' y2='18' />
+		</svg>
+	)
+}
+
+// Clears the filter query (not the selected value). Sits inside the control
+// next to the trigger chevron so the user can reset their search without
+// reaching for Backspace.
+const ClearButton = (props = {})=> {
+	const combobox = useComboboxContext()
+	const handleClick = (event)=> {
+		event.preventDefault()
+		event.stopPropagation()
+		combobox().setInputValue('')
+		props.onClick?.(event)
+	}
+	return (
+		<button
+			type='button'
+			className={props.className}
+			onClick={handleClick}
+			onPointerDown={e=> e.preventDefault()}
+			tabIndex={-1}
+			aria-label='Clear search'
+		>
+			<XIcon />
+		</button>
+	)
+}
+
 // Public component. `classNames` themes each slot (control/input/trigger/content/
 // empty/item/itemText/check/label); anything not split here (e.g. `filter`,
 // `name`) flows through to the filter Root.
@@ -198,6 +235,7 @@ const FilterableSelect = (props = {})=> {
 					disabled={local.disabled}
 					placeholder={local.placeholder ?? 'Type to search...'}
 				/>
+				<ClearButton className={cn.clear} />
 				<Combobox.Trigger className={cn.trigger} type='button'>
 					<ChevronIcon />
 				</Combobox.Trigger>
