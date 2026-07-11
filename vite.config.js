@@ -67,7 +67,7 @@ export default defineConfig(({ command })=> {
 			include: [],
 		},
 		server: {
-			port: 4455,
+			port: 3456,
 			open: true,
 		},
 	}
