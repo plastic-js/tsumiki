@@ -1,0 +1,27 @@
+:root {
+  --tsu-radius-round: 9999px;
+
+  --tsu-radius-l3-xs: 14px;
+  --tsu-radius-l2-xs: 6px;
+  --tsu-radius-l1-xs: 2px;
+
+  --tsu-radius-l3-sm: 14px;
+  --tsu-radius-l2-sm: 6px;
+  --tsu-radius-l1-sm: 2px;
+
+  --tsu-radius-l3-md: 16px;
+  --tsu-radius-l2-md: 8px;
+  --tsu-radius-l1-md: 4px;
+
+  --tsu-radius-l3-lg: 18px;
+  --tsu-radius-l2-lg: 10px;
+  --tsu-radius-l1-lg: 6px;
+
+  --tsu-radius-l3-xl: 20px;
+  --tsu-radius-l2-xl: 12px;
+  --tsu-radius-l1-xl: 8px;
+
+  --tsu-radius-l3-xxl: 28px;
+  --tsu-radius-l2-xxl: 20px;
+  --tsu-radius-l1-xxl: 16px;
+}

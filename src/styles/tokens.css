@@ -1,0 +1,23 @@
+@import './color.css';
+@import './semantic.css';
+@import './radius.css';
+@import './sizing.css';
+@import './typography.css';
+@import './spacing.css';
+@import './transition.css';
+@import './shadow.css';
+
+:root {
+  --tsu-font-family: system-ui, -apple-system, sans-serif;
+  --tsu-line-height: 1.5;
+
+  --tsu-container-padding-sm: 12px;
+  --tsu-container-padding-md: 16px;
+  --tsu-container-padding-lg: 24px;
+  --tsu-container-padding-xl: 32px;
+
+  --tsu-z-base: 0;
+  --tsu-z-dropdown: 100;
+  --tsu-z-modal: 200;
+  --tsu-z-toast: 300;
+}

@@ -1,0 +1,17 @@
+:root {
+  --tsu-duration-fast: 150ms;
+  --tsu-duration-normal: 250ms;
+  --tsu-duration-overlay-enter: 350ms;
+  --tsu-duration-overlay-exit: 200ms;
+
+  --tsu-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --tsu-ease-out: cubic-bezier(0.32, 0.72, 0, 1);
+  --tsu-ease-in: cubic-bezier(0.4, 0, 1, 1);
+
+  --tsu-transition-fast: var(--tsu-duration-fast) var(--tsu-ease-standard);
+  --tsu-transition-normal: var(--tsu-duration-normal) var(--tsu-ease-standard);
+  --tsu-transition-overlay-enter: var(--tsu-duration-overlay-enter) var(--tsu-ease-out);
+  --tsu-transition-overlay-exit: var(--tsu-duration-overlay-exit) var(--tsu-ease-in);
+
+  --tsu-transition-overlay: var(--tsu-transition-overlay-enter);
+}

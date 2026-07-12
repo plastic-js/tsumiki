@@ -1,0 +1,59 @@
+:root {
+  --tsu-level-primary-xs: 32px;
+  --tsu-level-primary-sm: 36px;
+  --tsu-level-primary-md: 40px;
+  --tsu-level-primary-lg: 44px;
+  --tsu-level-primary-xl: 48px;
+  --tsu-level-primary-xxl: 64px;
+
+  --tsu-level-secondary-xs: 16px;
+  --tsu-level-secondary-sm: 18px;
+  --tsu-level-secondary-md: 20px;
+  --tsu-level-secondary-lg: 22px;
+  --tsu-level-secondary-xl: 24px;
+  --tsu-level-secondary-xxl: 32px;
+}
+
+:root {
+  --tsu-comp-height-xs: var(--tsu-level-primary-xs);
+  --tsu-comp-height-sm: var(--tsu-level-primary-sm);
+  --tsu-comp-height-md: var(--tsu-level-primary-md);
+  --tsu-comp-height-lg: var(--tsu-level-primary-lg);
+  --tsu-comp-height-xl: var(--tsu-level-primary-xl);
+  --tsu-comp-height-xxl: var(--tsu-level-primary-xxl);
+
+  --tsu-comp-font-size-xs: 12px;
+  --tsu-comp-font-size-sm: 14px;
+  --tsu-comp-font-size-md: 14px;
+  --tsu-comp-font-size-lg: 16px;
+  --tsu-comp-font-size-xl: 18px;
+  --tsu-comp-font-size-xxl: 20px;
+
+  --tsu-comp-line-height-xs: 16px;
+  --tsu-comp-line-height-sm: 20px;
+  --tsu-comp-line-height-md: 20px;
+  --tsu-comp-line-height-lg: 24px;
+  --tsu-comp-line-height-xl: 28px;
+  --tsu-comp-line-height-xxl: 30px;
+
+  --tsu-comp-padding-y-xs: 7px;
+  --tsu-comp-padding-y-sm: 7px;
+  --tsu-comp-padding-y-md: 9px;
+  --tsu-comp-padding-y-lg: 9px;
+  --tsu-comp-padding-y-xl: 9px;
+  --tsu-comp-padding-y-xxl: 16px;
+
+  --tsu-comp-padding-x-xs: 8px;
+  --tsu-comp-padding-x-sm: 12px;
+  --tsu-comp-padding-x-md: 16px;
+  --tsu-comp-padding-x-lg: 20px;
+  --tsu-comp-padding-x-xl: 24px;
+  --tsu-comp-padding-x-xxl: 32px;
+
+  --tsu-comp-secondary-height-xs: var(--tsu-level-secondary-xs);
+  --tsu-comp-secondary-height-sm: var(--tsu-level-secondary-sm);
+  --tsu-comp-secondary-height-md: var(--tsu-level-secondary-md);
+  --tsu-comp-secondary-height-lg: var(--tsu-level-secondary-lg);
+  --tsu-comp-secondary-height-xl: var(--tsu-level-secondary-xl);
+  --tsu-comp-secondary-height-xxl: var(--tsu-level-secondary-xxl);
+}

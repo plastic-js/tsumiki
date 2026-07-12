@@ -1,0 +1,9 @@
+:root {
+  --tsu-spacing-xxs: 2px;
+  --tsu-spacing-xs: 4px;
+  --tsu-spacing-sm: 8px;
+  --tsu-spacing-md: 12px;
+  --tsu-spacing-lg: 16px;
+  --tsu-spacing-xl: 24px;
+  --tsu-spacing-xxl: 32px;
+}

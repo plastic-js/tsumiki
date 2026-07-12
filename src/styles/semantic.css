@@ -1,0 +1,212 @@
+/*
+ * Semantic token layer.
+ *
+ * Sits between the raw palette steps (theme.css / color.css) and the
+ * components. Components reference *semantics* (`--tsu-accent-solid-bg`,
+ * `--tsu-neutral-outline-border`, …), never raw steps — so a style survives
+ * wherever it is mounted and dark mode flips everything consistently.
+ *
+ * Modeled on Park UI / Radix Themes:
+ *   - every palette has the same 5 variants: solid · surface · subtle ·
+ *     outline · plain, each with bg / bg-hover / bg-active / border / fg
+ *   - hover/active tints are ALPHA tokens, so they read identically over the
+ *     page background and over panel/sheet backgrounds
+ *   - `disabled` is a uniform 50% opacity state applied on top of any variant
+ *     — never a separate near-identical gray color
+ */
+
+:root {
+  /* === Background hierarchy (container-aware) === */
+  --tsu-bg-page: var(--tsu-neutral-1);       /* app page background */
+  --tsu-bg-panel: var(--tsu-neutral-2);      /* cards, sheets, popovers, dialogs */
+  --tsu-bg-control: var(--tsu-neutral-3);    /* form controls (inputs, buttons) */
+  --tsu-bg-control-hover: var(--tsu-neutral-4);
+  --tsu-bg-overlay: rgba(0, 0, 0, 0.5);      /* modal scrim */
+  --tsu-bg-overlay-soft: rgba(0, 0, 0, 0.35); /* sheet / bottom-scrim */
+
+  /* Back-compat aliases (existing components) */
+  --tsu-bg: var(--tsu-bg-page);
+  --tsu-surface: var(--tsu-bg-panel);
+  --tsu-surface-raised: var(--tsu-bg-control);
+  --tsu-surface-raised-hover: var(--tsu-bg-control-hover);
+
+  /* === Text hierarchy === */
+  --tsu-fg: var(--tsu-neutral-12);
+  --tsu-text-primary: var(--tsu-neutral-12);
+  --tsu-text-secondary: var(--tsu-neutral-11);
+  --tsu-text-subtle: var(--tsu-neutral-9);
+
+  /* === Border hierarchy === */
+  --tsu-border: var(--tsu-neutral-6);
+  --tsu-border-strong: var(--tsu-neutral-7);
+
+  /* === Focus state === */
+  --tsu-focus-bg: var(--tsu-bg-control-hover);
+  --tsu-focus-border: var(--tsu-accent-8);
+  --tsu-focus-ring: var(--tsu-accent-alpha-8);
+
+  /* === Pressed / active state (touch) — unified === */
+  --tsu-pressed: var(--tsu-neutral-alpha-3);
+  --tsu-pressed-hover: var(--tsu-neutral-alpha-4);
+  --tsu-pressed-accent: var(--tsu-accent-alpha-3);
+  --tsu-pressed-accent-hover: var(--tsu-accent-alpha-4);
+  /* back-compat alias */
+  --tsu-color-pressed: var(--tsu-pressed);
+  --tsu-color-pressed-accent: var(--tsu-pressed-accent);
+
+  /* === Disabled state — uniform 50% opacity, no grayscale ===
+     Applied on top of any variant. The whole component fades uniformly so
+     the neutral intent (gray border) and the accent intent stay visually
+     distinct even when disabled. */
+  --tsu-disabled-opacity: 0.5;
+  /* fallback colors for surfaces that cannot use opacity */
+  --tsu-disabled-bg: var(--tsu-bg-control);
+  --tsu-disabled-fg: var(--tsu-neutral-9);
+  --tsu-disabled-border: var(--tsu-neutral-7);
+}
+
+/* ==========================================================================
+   Palette variants
+   solid  → filled control (button primary, checked toggle, switch track)
+   surface → bordered panel-tinted control (surface buttons, surface inputs)
+   subtle → tinted control, no border (segmented, chips, selected rows)
+   outline → transparent control with a border (outline buttons, inputs)
+   plain  → text-like control (link buttons, menu items)
+   ========================================================================== */
+
+:root {
+  /* ---- Neutral (olive) ---- */
+  --tsu-neutral-solid-bg: var(--tsu-neutral-9);
+  --tsu-neutral-solid-bg-hover: var(--tsu-neutral-10);
+  --tsu-neutral-solid-fg: var(--tsu-bg-page);
+
+  --tsu-neutral-surface-bg: var(--tsu-bg-panel);
+  --tsu-neutral-surface-bg-hover: var(--tsu-bg-control);
+  --tsu-neutral-surface-bg-active: var(--tsu-bg-control-hover);
+  --tsu-neutral-surface-border: var(--tsu-neutral-6);
+  --tsu-neutral-surface-border-hover: var(--tsu-neutral-7);
+  --tsu-neutral-surface-fg: var(--tsu-text-primary);
+
+  --tsu-neutral-subtle-bg: var(--tsu-neutral-alpha-3);
+  --tsu-neutral-subtle-bg-hover: var(--tsu-neutral-alpha-4);
+  --tsu-neutral-subtle-bg-active: var(--tsu-neutral-alpha-5);
+  --tsu-neutral-subtle-fg: var(--tsu-text-primary);
+
+  --tsu-neutral-outline-border: var(--tsu-neutral-6);
+  --tsu-neutral-outline-border-hover: var(--tsu-neutral-7);
+  --tsu-neutral-outline-bg-hover: var(--tsu-neutral-alpha-2);
+  --tsu-neutral-outline-bg-active: var(--tsu-neutral-alpha-3);
+  --tsu-neutral-outline-fg: var(--tsu-text-primary);
+
+  --tsu-neutral-plain-fg: var(--tsu-text-primary);
+  --tsu-neutral-plain-bg-hover: var(--tsu-neutral-alpha-3);
+  --tsu-neutral-plain-bg-active: var(--tsu-neutral-alpha-4);
+
+  /* ---- Accent (indigo) ---- */
+  --tsu-accent-solid-bg: var(--tsu-accent-9);
+  --tsu-accent-solid-bg-hover: var(--tsu-accent-10);
+  --tsu-accent-solid-fg: #ffffff;
+
+  --tsu-accent-surface-bg: var(--tsu-accent-alpha-2);
+  --tsu-accent-surface-bg-hover: var(--tsu-accent-alpha-3);
+  --tsu-accent-surface-bg-active: var(--tsu-accent-alpha-4);
+  --tsu-accent-surface-border: var(--tsu-accent-alpha-6);
+  --tsu-accent-surface-border-hover: var(--tsu-accent-alpha-7);
+  --tsu-accent-surface-fg: var(--tsu-accent-11);
+
+  --tsu-accent-subtle-bg: var(--tsu-accent-alpha-3);
+  --tsu-accent-subtle-bg-hover: var(--tsu-accent-alpha-4);
+  --tsu-accent-subtle-bg-active: var(--tsu-accent-alpha-5);
+  --tsu-accent-subtle-fg: var(--tsu-accent-11);
+
+  --tsu-accent-outline-border: var(--tsu-accent-alpha-7);
+  --tsu-accent-outline-border-hover: var(--tsu-accent-alpha-8);
+  --tsu-accent-outline-bg-hover: var(--tsu-accent-alpha-2);
+  --tsu-accent-outline-bg-active: var(--tsu-accent-alpha-3);
+  --tsu-accent-outline-fg: var(--tsu-accent-11);
+
+  --tsu-accent-plain-fg: var(--tsu-accent-11);
+  --tsu-accent-plain-bg-hover: var(--tsu-accent-alpha-3);
+  --tsu-accent-plain-bg-active: var(--tsu-accent-alpha-4);
+
+  /* ---- Danger (red) ---- */
+  --tsu-danger-solid-bg: var(--tsu-danger-9);
+  --tsu-danger-solid-bg-hover: var(--tsu-danger-10);
+  --tsu-danger-solid-fg: #ffffff;
+
+  --tsu-danger-surface-bg: var(--tsu-danger-alpha-2);
+  --tsu-danger-surface-bg-hover: var(--tsu-danger-alpha-3);
+  --tsu-danger-surface-bg-active: var(--tsu-danger-alpha-4);
+  --tsu-danger-surface-border: var(--tsu-danger-alpha-6);
+  --tsu-danger-surface-border-hover: var(--tsu-danger-alpha-7);
+  --tsu-danger-surface-fg: var(--tsu-danger-11);
+
+  --tsu-danger-subtle-bg: var(--tsu-danger-alpha-3);
+  --tsu-danger-subtle-bg-hover: var(--tsu-danger-alpha-4);
+  --tsu-danger-subtle-bg-active: var(--tsu-danger-alpha-5);
+  --tsu-danger-subtle-fg: var(--tsu-danger-11);
+
+  --tsu-danger-outline-border: var(--tsu-danger-alpha-7);
+  --tsu-danger-outline-border-hover: var(--tsu-danger-alpha-8);
+  --tsu-danger-outline-bg-hover: var(--tsu-danger-alpha-2);
+  --tsu-danger-outline-bg-active: var(--tsu-danger-alpha-3);
+  --tsu-danger-outline-fg: var(--tsu-danger-11);
+
+  --tsu-danger-plain-fg: var(--tsu-danger-11);
+  --tsu-danger-plain-bg-hover: var(--tsu-danger-alpha-3);
+  --tsu-danger-plain-bg-active: var(--tsu-danger-alpha-4);
+
+  /* ---- Success (green) ---- */
+  --tsu-success-solid-bg: var(--tsu-success-9);
+  --tsu-success-solid-bg-hover: var(--tsu-success-10);
+  --tsu-success-solid-fg: #ffffff;
+
+  --tsu-success-surface-bg: var(--tsu-success-alpha-2);
+  --tsu-success-surface-bg-hover: var(--tsu-success-alpha-3);
+  --tsu-success-surface-bg-active: var(--tsu-success-alpha-4);
+  --tsu-success-surface-border: var(--tsu-success-alpha-6);
+  --tsu-success-surface-border-hover: var(--tsu-success-alpha-7);
+  --tsu-success-surface-fg: var(--tsu-success-11);
+
+  --tsu-success-subtle-bg: var(--tsu-success-alpha-3);
+  --tsu-success-subtle-bg-hover: var(--tsu-success-alpha-4);
+  --tsu-success-subtle-bg-active: var(--tsu-success-alpha-5);
+  --tsu-success-subtle-fg: var(--tsu-success-11);
+
+  --tsu-success-outline-border: var(--tsu-success-alpha-7);
+  --tsu-success-outline-border-hover: var(--tsu-success-alpha-8);
+  --tsu-success-outline-bg-hover: var(--tsu-success-alpha-2);
+  --tsu-success-outline-bg-active: var(--tsu-success-alpha-3);
+  --tsu-success-outline-fg: var(--tsu-success-11);
+
+  --tsu-success-plain-fg: var(--tsu-success-11);
+  --tsu-success-plain-bg-hover: var(--tsu-success-alpha-3);
+  --tsu-success-plain-bg-active: var(--tsu-success-alpha-4);
+
+  /* ---- Warning (amber) ---- */
+  --tsu-warning-solid-bg: var(--tsu-warning-9);
+  --tsu-warning-solid-bg-hover: var(--tsu-warning-10);
+  --tsu-warning-solid-fg: #ffffff;
+
+  --tsu-warning-surface-bg: var(--tsu-warning-alpha-2);
+  --tsu-warning-surface-bg-hover: var(--tsu-warning-alpha-3);
+  --tsu-warning-surface-bg-active: var(--tsu-warning-alpha-4);
+  --tsu-warning-surface-border: var(--tsu-warning-alpha-6);
+  --tsu-warning-surface-border-hover: var(--tsu-warning-alpha-7);
+  --tsu-warning-surface-fg: var(--tsu-warning-11);
+
+  --tsu-warning-subtle-bg: var(--tsu-warning-alpha-3);
+  --tsu-warning-subtle-bg-hover: var(--tsu-warning-alpha-4);
+  --tsu-warning-subtle-bg-active: var(--tsu-warning-alpha-5);
+  --tsu-warning-subtle-fg: var(--tsu-warning-11);
+
+  --tsu-warning-outline-border: var(--tsu-warning-alpha-7);
+  --tsu-warning-outline-border-hover: var(--tsu-warning-alpha-8);
+  --tsu-warning-outline-bg-hover: var(--tsu-warning-alpha-2);
+  --tsu-warning-outline-bg-active: var(--tsu-warning-alpha-3);
+  --tsu-warning-outline-fg: var(--tsu-warning-11);
+
+  --tsu-warning-plain-fg: var(--tsu-warning-11);
+  --tsu-warning-plain-bg-hover: var(--tsu-warning-alpha-3);
+  --tsu-warning-plain-bg-active: var(--tsu-warning-alpha-4);
+}

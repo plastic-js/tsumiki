@@ -9,7 +9,7 @@ const RUBBER_BAND_LIMIT = 50 // max rubber-band offset in px
 const wrapperClass = css`
 	position: relative;
 	overflow: hidden;
-	border-radius: 12px;
+	border-radius: var(--tsu-radius-l2-md);
 	user-select: none;
 `
 
@@ -34,8 +34,8 @@ const actionBtnClass = css`
 	justify-content: center;
 	border: none;
 	color: #fff;
-	font-size: 14px;
-	font-weight: 600;
+	font-size: var(--tsu-comp-font-size-md);
+	font-weight: var(--tsu-font-weight-semibold);
 	cursor: pointer;
 	font-family: inherit;
 `
@@ -204,3 +204,4 @@ const SwipeReveal = ({
 }
 
 export default SwipeReveal
+export { SwipeReveal }

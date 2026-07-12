@@ -1,16 +1,20 @@
+/* ══════════════════════════════════════════════
+ *    Skeleton
+ *    ══════════════════════════════════════════════ */
+
 import { css, keyframes } from '@emotion/css'
 
 const shimmer = keyframes({
-	'0%': { backgroundPosition: '-200% 0' },
-	'100%': { backgroundPosition: '200% 0' },
+  '0%': { backgroundPosition: '-200% 0' },
+  '100%': { backgroundPosition: '200% 0' },
 })
 
 const baseClass = css({
-	display: 'block',
-	background: 'linear-gradient(90deg, var(--border) 0%, var(--surface) 50%, var(--border) 100%)',
-	backgroundSize: '200% 100%',
-	animation: `${shimmer} 1.4s ease-in-out infinite`,
-	borderRadius: '6px',
+  display: 'block',
+  background: 'linear-gradient(90deg, var(--tsu-border) 25%, var(--tsu-border-strong) 50%, var(--tsu-border) 75%)',
+  backgroundSize: '200% 100%',
+  animation: `${shimmer} 1.4s ease-in-out infinite`,
+  borderRadius: 'var(--tsu-radius-l2-xs)',
 })
 
 const Skeleton = ({
@@ -25,3 +29,4 @@ const Skeleton = ({
 )
 
 export default Skeleton
+export { Skeleton }

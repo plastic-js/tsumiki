@@ -1,0 +1,28 @@
+:root {
+  --tsu-font-size-xs: 10px;
+  --tsu-font-size-sm: 12px;
+  --tsu-font-size-md: 14px;
+  --tsu-font-size-lg: 16px;
+  --tsu-font-size-xl: 20px;
+  --tsu-font-size-xxl: 24px;
+
+  --tsu-font-weight-regular: 400;
+  --tsu-font-weight-medium: 500;
+  --tsu-font-weight-semibold: 600;
+
+  --tsu-text-title-size: var(--tsu-font-size-lg);
+  --tsu-text-title-weight: var(--tsu-font-weight-semibold);
+  --tsu-text-title-line-height: 24px;
+
+  --tsu-text-body-size: var(--tsu-font-size-md);
+  --tsu-text-body-weight: var(--tsu-font-weight-regular);
+  --tsu-text-body-line-height: 20px;
+
+  --tsu-text-label-size: var(--tsu-font-size-md);
+  --tsu-text-label-weight: var(--tsu-font-weight-medium);
+  --tsu-text-label-line-height: 20px;
+
+  --tsu-text-caption-size: var(--tsu-font-size-sm);
+  --tsu-text-caption-weight: var(--tsu-font-weight-regular);
+  --tsu-text-caption-line-height: 16px;
+}

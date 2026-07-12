@@ -1,0 +1,172 @@
+@import './theme.css';
+@import '@radix-ui/colors/red.css';
+@import '@radix-ui/colors/red-alpha.css';
+@import '@radix-ui/colors/red-dark.css';
+@import '@radix-ui/colors/red-dark-alpha.css';
+@import '@radix-ui/colors/green.css';
+@import '@radix-ui/colors/green-alpha.css';
+@import '@radix-ui/colors/green-dark.css';
+@import '@radix-ui/colors/green-dark-alpha.css';
+@import '@radix-ui/colors/amber.css';
+@import '@radix-ui/colors/amber-alpha.css';
+@import '@radix-ui/colors/amber-dark.css';
+@import '@radix-ui/colors/amber-dark-alpha.css';
+
+:root {
+  /* App background — Radix step 1 (the most recessive color in both modes) */
+  --tsu-bg: var(--tsu-neutral-1);
+  --tsu-fg: var(--tsu-neutral-12);
+
+  /* Surfaces (Radix semantic steps, consistent across light/dark — the
+     neutral scale flips by mode):
+     step 2 = subtle surface (cards, sheets, panels, popovers)
+     step 3 = raised controls (solid inputs, toggles, chips)
+     step 4 = hover/focus of raised controls */
+  --tsu-surface: var(--tsu-neutral-2);
+  --tsu-surface-raised: var(--tsu-neutral-3);
+  --tsu-surface-raised-hover: var(--tsu-neutral-4);
+
+  /* Pressed-state feedback (touch): rows/items vs. controls */
+  --tsu-color-pressed: var(--tsu-surface-raised);
+  --tsu-color-pressed-accent: var(--tsu-accent-3);
+
+  /* Muted / quiet gray — loading, empty, and secondary surfaces */
+  --tsu-color-muted: var(--tsu-neutral-alpha-7);
+  --tsu-color-muted-subtle: var(--tsu-neutral-alpha-5);
+
+  /* Info (accent) — full 12-step palette */
+  --tsu-info-1: var(--tsu-accent-1);
+  --tsu-info-2: var(--tsu-accent-2);
+  --tsu-info-3: var(--tsu-accent-3);
+  --tsu-info-4: var(--tsu-accent-4);
+  --tsu-info-5: var(--tsu-accent-5);
+  --tsu-info-6: var(--tsu-accent-6);
+  --tsu-info-7: var(--tsu-accent-7);
+  --tsu-info-8: var(--tsu-accent-8);
+  --tsu-info-9: var(--tsu-accent-9);
+  --tsu-info-10: var(--tsu-accent-10);
+  --tsu-info-11: var(--tsu-accent-11);
+  --tsu-info-12: var(--tsu-accent-12);
+
+  /* Danger (red) */
+  --tsu-danger-1: var(--red-1);
+  --tsu-danger-2: var(--red-2);
+  --tsu-danger-3: var(--red-3);
+  --tsu-danger-4: var(--red-4);
+  --tsu-danger-5: var(--red-5);
+  --tsu-danger-6: var(--red-6);
+  --tsu-danger-7: var(--red-7);
+  --tsu-danger-8: var(--red-8);
+  --tsu-danger-9: var(--red-9);
+  --tsu-danger-10: var(--red-10);
+  --tsu-danger-11: var(--red-11);
+  --tsu-danger-12: var(--red-12);
+
+  /* Danger alpha (red) */
+  --tsu-danger-alpha-1: var(--red-a1);
+  --tsu-danger-alpha-2: var(--red-a2);
+  --tsu-danger-alpha-3: var(--red-a3);
+  --tsu-danger-alpha-4: var(--red-a4);
+  --tsu-danger-alpha-5: var(--red-a5);
+  --tsu-danger-alpha-6: var(--red-a6);
+  --tsu-danger-alpha-7: var(--red-a7);
+  --tsu-danger-alpha-8: var(--red-a8);
+  --tsu-danger-alpha-9: var(--red-a9);
+  --tsu-danger-alpha-10: var(--red-a10);
+  --tsu-danger-alpha-11: var(--red-a11);
+  --tsu-danger-alpha-12: var(--red-a12);
+
+  /* Success (green) */
+  --tsu-success-1: var(--green-1);
+  --tsu-success-2: var(--green-2);
+  --tsu-success-3: var(--green-3);
+  --tsu-success-4: var(--green-4);
+  --tsu-success-5: var(--green-5);
+  --tsu-success-6: var(--green-6);
+  --tsu-success-7: var(--green-7);
+  --tsu-success-8: var(--green-8);
+  --tsu-success-9: var(--green-9);
+  --tsu-success-10: var(--green-10);
+  --tsu-success-11: var(--green-11);
+  --tsu-success-12: var(--green-12);
+
+  /* Success alpha (green) */
+  --tsu-success-alpha-1: var(--green-a1);
+  --tsu-success-alpha-2: var(--green-a2);
+  --tsu-success-alpha-3: var(--green-a3);
+  --tsu-success-alpha-4: var(--green-a4);
+  --tsu-success-alpha-5: var(--green-a5);
+  --tsu-success-alpha-6: var(--green-a6);
+  --tsu-success-alpha-7: var(--green-a7);
+  --tsu-success-alpha-8: var(--green-a8);
+  --tsu-success-alpha-9: var(--green-a9);
+  --tsu-success-alpha-10: var(--green-a10);
+  --tsu-success-alpha-11: var(--green-a11);
+  --tsu-success-alpha-12: var(--green-a12);
+
+  /* Warning (amber) */
+  --tsu-warning-1: var(--amber-1);
+  --tsu-warning-2: var(--amber-2);
+  --tsu-warning-3: var(--amber-3);
+  --tsu-warning-4: var(--amber-4);
+  --tsu-warning-5: var(--amber-5);
+  --tsu-warning-6: var(--amber-6);
+  --tsu-warning-7: var(--amber-7);
+  --tsu-warning-8: var(--amber-8);
+  --tsu-warning-9: var(--amber-9);
+  --tsu-warning-10: var(--amber-10);
+  --tsu-warning-11: var(--amber-11);
+  --tsu-warning-12: var(--amber-12);
+
+  /* Warning alpha (amber) */
+  --tsu-warning-alpha-1: var(--amber-a1);
+  --tsu-warning-alpha-2: var(--amber-a2);
+  --tsu-warning-alpha-3: var(--amber-a3);
+  --tsu-warning-alpha-4: var(--amber-a4);
+  --tsu-warning-alpha-5: var(--amber-a5);
+  --tsu-warning-alpha-6: var(--amber-a6);
+  --tsu-warning-alpha-7: var(--amber-a7);
+  --tsu-warning-alpha-8: var(--amber-a8);
+  --tsu-warning-alpha-9: var(--amber-a9);
+  --tsu-warning-alpha-10: var(--amber-a10);
+  --tsu-warning-alpha-11: var(--amber-a11);
+  --tsu-warning-alpha-12: var(--amber-a12);
+
+  /* Neutral Alpha Overlay (used for shadows/elevation) */
+  --tsu-neutral-alpha-1: var(--olive-a1);
+  --tsu-neutral-alpha-2: var(--olive-a2);
+  --tsu-neutral-alpha-3: var(--olive-a3);
+  --tsu-neutral-alpha-4: var(--olive-a4);
+  --tsu-neutral-alpha-5: var(--olive-a5);
+  --tsu-neutral-alpha-6: var(--olive-a6);
+  --tsu-neutral-alpha-7: var(--olive-a7);
+  --tsu-neutral-alpha-8: var(--olive-a8);
+  --tsu-neutral-alpha-9: var(--olive-a9);
+  --tsu-neutral-alpha-10: var(--olive-a10);
+  --tsu-neutral-alpha-11: var(--olive-a11);
+  --tsu-neutral-alpha-12: var(--olive-a12);
+
+  /* Disabled State */
+  --tsu-disabled-bg: var(--tsu-surface-raised);
+  --tsu-disabled-fg: var(--tsu-neutral-9);
+  --tsu-disabled-border: var(--tsu-neutral-7);
+
+  /* Focus State */
+  --tsu-focus-bg: var(--tsu-surface-raised-hover);
+  --tsu-focus-border: var(--tsu-accent-8);
+
+  /* Legacy Aliases — map old variable names to new token system */
+  --ink: var(--tsu-fg);
+  --muted: var(--tsu-neutral-11);
+  --accent: var(--tsu-accent-9);
+  --surface: var(--tsu-bg);
+  --bg: var(--tsu-neutral-2);
+  --border: var(--tsu-neutral-7);
+  --danger: var(--tsu-danger-9);
+}
+
+/* Dark mode: the neutral scale flips automatically via the Radix dark import.
+   Keep the page at step 1 (like light mode); only force pure-white text. */
+:root.dark {
+  --tsu-fg: #ffffff;
+}

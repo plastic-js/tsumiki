@@ -1,60 +1,47 @@
 import { css } from '@emotion/css'
 import { splitProps } from '@plastic-js/plastic'
+import Input from './Input.jsx'
 
-const wrapperClass = css({
-	display: 'flex',
-	alignItems: 'center',
-	width: '100%',
-	boxSizing: 'border-box',
-	height: '44px',
-	background: 'var(--bg, rgba(0,0,0,0.2))',
-	border: '1px solid var(--border)',
-	borderRadius: '10px',
-	padding: '0 14px',
-	'&:focus-within': { borderColor: 'var(--accent)' },
-})
-
-const errorClass = css({
-	borderColor: 'var(--danger) !important',
-})
+function CardIcon() {
+  return (
+    <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24">
+      <rect x="2" y="5" width="20" height="14" rx="2" />
+      <line x1="2" y1="10" x2="22" y2="10" />
+    </svg>
+  )
+}
 
 const inputClass = css({
-	flex: 1,
-	minWidth: 0,
-	height: '100%',
-	background: 'transparent',
-	border: 'none',
-	color: 'var(--ink)',
-	fontSize: '15px',
-	fontFamily: 'inherit',
-	outline: 'none',
-	letterSpacing: '1.5px',
-	'&::placeholder': { color: 'var(--muted)', letterSpacing: 'normal' },
+  letterSpacing: '1.5px',
+  '&::placeholder': { letterSpacing: 'normal' },
 })
 
 const read = (value)=> {
-	return typeof value === 'function' ? value() : value
+  return typeof value === 'function' ? value() : value
 }
 
 const groupDigits = (digits)=> {
-	if (!digits){ return '' }
-	return digits.replace(/(\d{4})(?=\d)/g, '$1-')
+  if (!digits){ return '' }
+  return digits.replace(/(\d{4})(?=\d)/g, '$1-')
 }
 
 const CardNumberInput = (props)=> {
-	const [local, rest] = splitProps(props, ['value', 'onValueChange', 'invalid', 'placeholder'])
-	return (
-		<div className={()=> `${wrapperClass} ${read(local.invalid) ? errorClass : ''}`}>
-			<input
-				className={inputClass}
-				inputMode='numeric'
-				onInput={e=> local.onValueChange?.(e.target.value.replace(/\D/g, ''))}
-				placeholder={local.placeholder ?? '0000-0000-0000-0000'}
-				value={()=> groupDigits(read(local.value))}
-				{...rest}
-			/>
-		</div>
-	)
+  const [local, rest] = splitProps(props, ['value', 'onValueChange', 'invalid', 'disabled', 'placeholder'])
+
+  return (
+    <Input
+      invalid={local.invalid}
+      disabled={local.disabled}
+      placeholder={local.placeholder ?? '0000-0000-0000-0000'}
+      prefix={<CardIcon />}
+      inputClassName={inputClass}
+      value={()=> groupDigits(read(local.value))}
+      onInput={e=> local.onValueChange?.(e.target.value.replace(/\D/g, ''))}
+      inputMode="numeric"
+      {...rest}
+    />
+  )
 }
 
 export default CardNumberInput
+export { CardNumberInput }

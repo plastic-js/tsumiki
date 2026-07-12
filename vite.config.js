@@ -31,7 +31,7 @@ export default defineConfig(({ command })=> {
 			? undefined
 			: {
 				minify: false,
-				sourcemap: true,
+				sourcemap: false,
 				target: 'esnext',
 				lib: {
 					entry: resolve(__dirname, 'src/index.js'),
@@ -43,7 +43,8 @@ export default defineConfig(({ command })=> {
 						/^@plastic-js\/plastic(?:\/.*)?$/,
 						/^@plastic-js\/ark(?:\/.*)?$/,
 						/^@emotion\/css(?:\/.*)?$/,
-						/^@zag-js\/combobox(?:\/.*)?$/,
+						/^@zag-js\//,
+						/^popmotion(?:\/.*)?$/,
 						/^alien-signals(?:\/.*)?$/,
 					],
 					output: {
@@ -69,6 +70,9 @@ export default defineConfig(({ command })=> {
 		server: {
 			port: 3456,
 			open: true,
+			fs: {
+				allow: [resolve(__dirname, 'showcase'), resolve(__dirname)],
+			},
 		},
 	}
 })

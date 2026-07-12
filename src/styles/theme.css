@@ -1,0 +1,52 @@
+@import '@radix-ui/colors/indigo.css';
+@import '@radix-ui/colors/indigo-alpha.css';
+@import '@radix-ui/colors/olive.css';
+@import '@radix-ui/colors/olive-alpha.css';
+@import '@radix-ui/colors/indigo-dark.css';
+@import '@radix-ui/colors/indigo-dark-alpha.css';
+@import '@radix-ui/colors/olive-dark.css';
+@import '@radix-ui/colors/olive-dark-alpha.css';
+
+:root {
+  /* Accent (indigo) */
+  --tsu-accent-1: var(--indigo-1);
+  --tsu-accent-2: var(--indigo-2);
+  --tsu-accent-3: var(--indigo-3);
+  --tsu-accent-4: var(--indigo-4);
+  --tsu-accent-5: var(--indigo-5);
+  --tsu-accent-6: var(--indigo-6);
+  --tsu-accent-7: var(--indigo-7);
+  --tsu-accent-8: var(--indigo-8);
+  --tsu-accent-9: var(--indigo-9);
+  --tsu-accent-10: var(--indigo-10);
+  --tsu-accent-11: var(--indigo-11);
+  --tsu-accent-12: var(--indigo-12);
+
+  /* Accent alpha (indigo) — transparent tints for hover/active/overlays */
+  --tsu-accent-alpha-1: var(--indigo-a1);
+  --tsu-accent-alpha-2: var(--indigo-a2);
+  --tsu-accent-alpha-3: var(--indigo-a3);
+  --tsu-accent-alpha-4: var(--indigo-a4);
+  --tsu-accent-alpha-5: var(--indigo-a5);
+  --tsu-accent-alpha-6: var(--indigo-a6);
+  --tsu-accent-alpha-7: var(--indigo-a7);
+  --tsu-accent-alpha-8: var(--indigo-a8);
+  --tsu-accent-alpha-9: var(--indigo-a9);
+  --tsu-accent-alpha-10: var(--indigo-a10);
+  --tsu-accent-alpha-11: var(--indigo-a11);
+  --tsu-accent-alpha-12: var(--indigo-a12);
+
+  /* Neutral (olive) */
+  --tsu-neutral-1: var(--olive-1);
+  --tsu-neutral-2: var(--olive-2);
+  --tsu-neutral-3: var(--olive-3);
+  --tsu-neutral-4: var(--olive-4);
+  --tsu-neutral-5: var(--olive-5);
+  --tsu-neutral-6: var(--olive-6);
+  --tsu-neutral-7: var(--olive-7);
+  --tsu-neutral-8: var(--olive-8);
+  --tsu-neutral-9: var(--olive-9);
+  --tsu-neutral-10: var(--olive-10);
+  --tsu-neutral-11: var(--olive-11);
+  --tsu-neutral-12: var(--olive-12);
+}

@@ -1,0 +1,9 @@
+:root {
+  --tsu-shadow-sm: 0 1px 2px var(--tsu-neutral-alpha-6),
+    0 2px 4px var(--tsu-neutral-alpha-7);
+  --tsu-shadow-md: 0 1px 3px var(--tsu-neutral-alpha-6),
+    0 4px 16px var(--tsu-neutral-alpha-8);
+  --tsu-shadow-lg: 0 2px 6px var(--tsu-neutral-alpha-6),
+    0 12px 32px var(--tsu-neutral-alpha-10);
+  --tsu-shadow-up: 0 -8px 32px var(--tsu-neutral-alpha-10);
+}
