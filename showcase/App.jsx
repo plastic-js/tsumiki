@@ -1,12 +1,16 @@
 import './global.css'
 import { NavLink, Route, Router, navigate, onMount, renderApp } from '@plastic-js/plastic'
+import DatePickerMobilePage from './pages/DatePickerMobilePage.jsx'
 import FilterableSelectPage from './pages/FilterableSelectPage.jsx'
 import FilterableSelectMobilePage from './pages/FilterableSelectMobilePage.jsx'
 import SelectMobilePage from './pages/SelectMobilePage.jsx'
+import FilterableSelectMobileInDialogPage from './pages/FilterableSelectMobileInDialogPage.jsx'
 
 const showcases = [
+	{ name: 'DatePickerMobile', path: '/date-picker-mobile', Component: DatePickerMobilePage },
 	{ name: 'FilterableSelect', path: '/filterable-select', Component: FilterableSelectPage },
 	{ name: 'FilterableSelectMobile', path: '/filterable-select-mobile', Component: FilterableSelectMobilePage },
+	{ name: 'FilterableSelectMobile (in Dialog)', path: '/filterable-select-mobile-in-dialog', Component: FilterableSelectMobileInDialogPage },
 	{ name: 'SelectMobile', path: '/select-mobile', Component: SelectMobilePage },
 ]
 
