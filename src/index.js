@@ -10,6 +10,7 @@ export { default as Combobox } from "./components/Combobox.jsx";
 export { default as ConfirmDialog } from "./components/ConfirmDialog.jsx";
 export { default as DateInput } from "./components/DateInput.jsx";
 export { default as DatePicker } from "./components/DatePicker.jsx";
+export { default as DatePickerMobile } from "./components/DatePickerMobile/index.jsx";
 export { default as Dialog } from "./components/Dialog.jsx";
 export { default as Drawer } from "./components/Drawer.jsx";
 export { default as Field } from "./components/Field.jsx";
