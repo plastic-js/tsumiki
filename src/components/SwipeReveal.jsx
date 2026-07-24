@@ -3,6 +3,8 @@ import { createEffect, createSignal } from '@plastic-js/plastic'
 
 const ACTIONS_WIDTH = 160
 const SWIPE_THRESHOLD = ACTIONS_WIDTH / 2
+const VELOCITY_THRESHOLD = 0.5 // px/ms — flick assist threshold
+const RUBBER_BAND_LIMIT = 50 // max rubber-band offset in px
 
 const wrapperClass = css`
 	position: relative;
@@ -15,7 +17,7 @@ const trackClass = css`
 	display: flex;
 	align-items: stretch;
 	will-change: transform;
-	transition: transform 220ms ease;
+	transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
 	touch-action: pan-y;
 	&[data-dragging="true"] { transition: none; }
 `
@@ -50,8 +52,11 @@ const SwipeReveal = ({
 	let trackEl = null
 	let startX = 0
 	let startY = 0
+	let lastX = 0
+	let lastTime = 0
 	let baseOffset = 0
 	let currentOffset = 0
+	let velocity = 0
 	let dragging = false
 	let axisLocked = false
 	let horizontal = false
@@ -63,12 +68,14 @@ const SwipeReveal = ({
 		if (trackEl){ trackEl.style.transform = `translateX(${px}px)` }
 	}
 
+	const setDragging = (v)=> {
+		if (trackEl){ trackEl.dataset.dragging = String(v) }
+	}
+
 	const snap = (toOpen)=> {
 		currentOffset = toOpen ? -ACTIONS_WIDTH : 0
-		if (trackEl){
-			trackEl.dataset.dragging = 'false'
-			applyTransform(currentOffset)
-		}
+		setDragging(false)
+		applyTransform(currentOffset)
 		onOpenChange?.(toOpen)
 		isOpen(toOpen)
 	}
@@ -79,10 +86,8 @@ const SwipeReveal = ({
 		if (currentActive !== undefined && currentActive !== thisId && isOpen()){
 			isOpen(false)
 			currentOffset = 0
-			if (trackEl){
-				trackEl.dataset.dragging = 'false'
-				applyTransform(0)
-			}
+			setDragging(false)
+			applyTransform(0)
 		}
 	})
 
@@ -90,11 +95,15 @@ const SwipeReveal = ({
 		if (e.pointerType === 'mouse' && e.button !== 0){ return }
 		startX = e.clientX
 		startY = e.clientY
+		lastX = e.clientX
+		lastTime = performance.now()
 		baseOffset = isOpen() ? -ACTIONS_WIDTH : 0
+		velocity = 0
 		dragging = true
 		axisLocked = false
 		horizontal = false
 		moved = false
+		onSwipeStart?.()
 		e.currentTarget.setPointerCapture?.(e.pointerId)
 	}
 
@@ -106,13 +115,30 @@ const SwipeReveal = ({
 			if (Math.abs(dx) < 6 && Math.abs(dy) < 6){ return }
 			horizontal = Math.abs(dx) > Math.abs(dy)
 			axisLocked = true
-			if (horizontal && trackEl){ trackEl.dataset.dragging = 'true' }
+			if (horizontal){ setDragging(true) }
 		}
 		if (!horizontal){ return }
 		moved = true
+
+		// track velocity (px/ms)
+		const now = performance.now()
+		const dt = now - lastTime
+		if (dt > 0){
+			velocity = (e.clientX - lastX) / dt
+		}
+		lastX = e.clientX
+		lastTime = now
+
 		let next = baseOffset + dx
-		if (next > 0){ next = 0 }
-		if (next < -ACTIONS_WIDTH){ next = -ACTIONS_WIDTH - (next + ACTIONS_WIDTH) * 0.2 }
+		if (next > 0){
+			// rubber-band overscroll on the right
+			next = RUBBER_BAND_LIMIT * (1 - Math.exp(-next / RUBBER_BAND_LIMIT))
+		}
+		if (next < -ACTIONS_WIDTH){
+			// rubber-band overscroll on the left
+			const over = -(next + ACTIONS_WIDTH)
+			next = -ACTIONS_WIDTH - RUBBER_BAND_LIMIT * (1 - Math.exp(-over / RUBBER_BAND_LIMIT))
+		}
 		currentOffset = next
 		applyTransform(next)
 	}
@@ -122,6 +148,12 @@ const SwipeReveal = ({
 		dragging = false
 		e.currentTarget.releasePointerCapture?.(e.pointerId)
 		if (!horizontal){ return }
+
+		// flick assist: fast swipe toward open/close direction
+		if (Math.abs(velocity) > VELOCITY_THRESHOLD){
+			snap(velocity < 0)
+			return
+		}
 		const shouldOpen = currentOffset < -SWIPE_THRESHOLD
 		snap(shouldOpen)
 	}
@@ -152,10 +184,11 @@ const SwipeReveal = ({
 					{children}
 				</div>
 				<div className={actionsClass}>
-					{actions.map(action=> (
+					{actions.map((action, idx)=> (
 						// prevent tab focus when actions are hidden off-screen
 						<button
 							className={actionBtnClass}
+							key={action.label ?? idx}
 							onClick={handleActionClick(action)}
 							style={{ background: action.color }}
 							tabIndex={isOpen() ? 0 : -1}
