@@ -46,7 +46,7 @@ const iconClass = css({
 
 const BackToTop = (props = {})=> {
   const [local] = splitProps(
-    mergeProps({ threshold: 200 }, props),
+    mergeProps({ threshold: 350 }, props),
     ['className', 'threshold', 'target', 'icon', 'aria-label', 'onClick'],
   )
 
