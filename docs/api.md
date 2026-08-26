@@ -716,6 +716,8 @@ A free-form presentation layer: a backdrop, an optional drag grabber, and a scro
 **Rendered DOM parts:** exactly three — `data-part="backdrop"`, `data-part="grabber"` (only when `draggable`), and `data-part="content"`. With the default `lazyMount: true` + `unmountOnExit: true`, a closed sheet that was never opened renders **zero** nodes; after close it stays mounted only long enough for the exit transition, then unmounts. BottomSheet has no focus trap or Escape-to-close — use [`Dialog`](#dialog) when those are required.
 
 > **Design decision:** `content` is a pure container — `display: flex; flex-direction: column` only, with **no padding, no margin, and no scrolling**. Spacing and scrolling are entirely consumer-owned: build your own layout inside `children` (the sheet caps height at `70vh`, so a scrollable section can be a `flex: 1; min-height: 0; overflow-y: auto` child).
+>
+> **Consumer contract:** any scrollable child inside a `BottomSheet` must set `overscroll-behavior: contain` (or `none` if a hard edge is desired). Otherwise, on iOS the rubber-band overscroll at the child's top/bottom chains into the drag-to-dismiss area and shoves the whole sheet.
 
 | Prop | Type | Default | Description |
 |---|---|---|---|---|
