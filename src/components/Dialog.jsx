@@ -126,7 +126,7 @@ const bodyClass = css({
 	flex: 1,
 	minHeight: 0,
 	overflowY: 'auto',
-	WebkitOverflowScrolling: 'touch',
+	overscrollBehavior: 'contain',
 })
 
 const footerClass = css({
