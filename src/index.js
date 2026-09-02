@@ -68,6 +68,7 @@ export {
 export { default as MoneyInput } from "./components/MoneyInput.jsx";
 export { default as NumberInput } from "./components/NumberInput.jsx";
 export { default as Pagination } from "./components/Pagination.jsx";
+export { default as PinInput } from "./components/PinInput.jsx";
 export { default as Popover } from "./components/Popover.jsx";
 export { default as Portal } from "./components/Portal.jsx";
 export { default as Presence } from "./components/Presence.jsx";
