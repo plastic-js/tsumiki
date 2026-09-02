@@ -26,6 +26,12 @@ const formatDateLabel = (date) => {
   return `${MONTH_NAMES_SHORT[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`
 }
 
+const toISO = (date) => {
+  const m = String(date.getMonth() + 1).padStart(2, '0')
+  const d = String(date.getDate()).padStart(2, '0')
+  return `${date.getFullYear()}-${m}-${d}`
+}
+
 const parseDate = (v) => {
   if (!v) return null
   if (v instanceof Date) return isNaN(v.getTime()) ? null : v
@@ -330,7 +336,7 @@ const DatePicker = (props = {}) => {
   const confirm = () => {
     const date = toDate(tempYear(), tempMonth(), tempDay())
     selectedValue(date)
-    local.onValueChange?.(date)
+    local.onValueChange?.(toISO(date))
     closeSheet()
   }
 
