@@ -4,19 +4,27 @@ import { Either, False, True, mergeProps, splitProps } from '@plastic-js/plastic
 import Portal from './Portal.jsx'
 import Icon from './Icon.jsx'
 import Button from './Button.jsx'
+import DialogSheet from './DialogSheet.jsx'
+import {
+	bodyClass,
+	closeBtnClass,
+	footerBtnClass,
+	footerClass,
+	headerClass,
+	negativeBtnClass,
+	positiveBtnClass,
+	titleClass,
+	titleIconClass,
+	titleWrapClass,
+} from './dialogParts.js'
 
+// Center ("modal") mode stays on the ark dialog machine (modal, focus trap,
+// scroll lock all enabled). A centered dialog never triggers the iOS viewport
+// shrink documented in DialogSheet.jsx, so it needs no special handling.
 const backdropModalClass = css({
 	position: 'fixed',
 	inset: 0,
 	background: 'var(--tsu-bg-overlay)',
-	backdropFilter: 'blur(8px)',
-	WebkitBackdropFilter: 'blur(8px)',
-})
-
-const backdropSheetClass = css({
-	position: 'fixed',
-	inset: 0,
-	background: 'var(--tsu-bg-overlay-soft)',
 	backdropFilter: 'blur(8px)',
 	WebkitBackdropFilter: 'blur(8px)',
 })
@@ -30,23 +38,9 @@ const positionerModalClass = css({
 	padding: 'var(--tsu-spacing-lg)',
 })
 
-const positionerSheetClass = css({
-	position: 'fixed',
-	inset: 0,
-	display: 'flex',
-	alignItems: 'flex-end',
-	justifyContent: 'center',
-	padding: 0,
-})
-
 const modalContentIn = keyframes({
 	from: { opacity: 0, transform: 'scale(0.95)' },
 	to: { opacity: 1, transform: 'scale(1)' },
-})
-
-const sheetContentIn = keyframes({
-	from: { transform: 'translateY(100%)' },
-	to: { transform: 'translateY(0)' },
 })
 
 const contentModalClass = css({
@@ -65,112 +59,7 @@ const contentModalClass = css({
 	animation: `${modalContentIn} 200ms ease`,
 })
 
-const contentSheetClass = css({
-	background: 'var(--tsu-bg-panel)',
-	borderRadius: 'var(--tsu-radius-l3-md) var(--tsu-radius-l3-md) 0 0',
-	width: '100%',
-	maxHeight: '70vh',
-	display: 'flex',
-	flexDirection: 'column',
-	color: 'var(--tsu-fg)',
-	boxShadow: 'var(--tsu-shadow-lg)',
-	animation: `${sheetContentIn} 250ms ease`,
-})
-
-const headerClass = css({
-	display: 'flex',
-	alignItems: 'center',
-	justifyContent: 'space-between',
-	padding: '18px var(--tsu-container-padding-lg) var(--tsu-spacing-lg)',
-	marginBottom: 'var(--tsu-spacing-sm)',
-	borderBottom: '1px solid var(--tsu-border)',
-	flexShrink: 0,
-})
-
-const titleWrapClass = css({
-	display: 'flex',
-	alignItems: 'center',
-	gap: '10px',
-	minWidth: 0,
-})
-
-const titleIconClass = css({
-	flexShrink: 0,
-	color: 'var(--tsu-accent-solid-bg)',
-})
-
-const titleClass = css({
-	fontSize: '18px',
-	fontWeight: 'var(--tsu-font-weight-semibold)',
-	margin: 0,
-})
-
-const closeBtnClass = css({
-	width: '32px',
-	height: '32px',
-	borderRadius: '50%',
-	background: 'transparent',
-	border: 'none',
-	color: 'var(--tsu-text-secondary)',
-	fontSize: '22px',
-	lineHeight: 1,
-	cursor: 'pointer',
-	display: 'flex',
-	alignItems: 'center',
-	justifyContent: 'center',
-	flexShrink: 0,
-})
-
-const bodyClass = css({
-	padding: '0 var(--tsu-container-padding-lg)',
-	flex: 1,
-	minHeight: 0,
-	overflowY: 'auto',
-	overscrollBehavior: 'contain',
-})
-
-const footerClass = css({
-	display: 'flex',
-	gap: 'var(--tsu-spacing-md)',
-	padding: 'var(--tsu-container-padding-lg)',
-	flexShrink: 0,
-})
-
-// Sheet-mode footer sits at the bottom of the screen; pad below the buttons so
-// they clear the iOS home indicator (env() is 0 on non-iOS).
-const footerSheetClass = css({
-	paddingBottom: 'calc(var(--tsu-container-padding-lg) + env(safe-area-inset-bottom, 0px))',
-})
-
-const footerBtnClass = css({
-	display: 'flex',
-	gap: '20px',
-	width: '100%',
-	justifyContent: 'flex-end',
-	'&.tsu-dialog-footer--center': {
-		justifyContent: 'center',
-	},
-})
-
-const negativeBtnClass = css({
-	flex: 1,
-	borderRadius: 'var(--tsu-radius-l1-lg)',
-	fontSize: 'var(--tsu-comp-font-size-lg)',
-	fontWeight: 'var(--tsu-font-weight-semibold)',
-	fontFamily: 'inherit',
-})
-
-const positiveBtnClass = css({
-	flex: 1,
-	borderRadius: 'var(--tsu-radius-l1-lg)',
-	fontSize: 'var(--tsu-comp-font-size-lg)',
-	fontWeight: 'var(--tsu-font-weight-semibold)',
-	fontFamily: 'inherit',
-})
-
 const read = (v)=> typeof v === 'function' ? v() : v
-
-let warnedSheetNoTitle = false
 
 const DialogPortal = (props)=> {
 	const dialog = useDialogContext()
@@ -183,6 +72,8 @@ const DialogPortal = (props)=> {
 		</Either>
 	)
 }
+
+let warnedSheetNoTitle = false
 
 const Dialog = (props)=> {
 	const merged = mergeProps({
@@ -214,7 +105,14 @@ const Dialog = (props)=> {
 	// to `false` after confirming) must NOT be reported as a cancel — it only
 	// fires `onClose`. `cancelRequested` records an explicit cancel before the
 	// close is applied; it is consumed (and reset) in `handleOpenChange`.
+	//
+	// `closeInFlight` de-duplicates reporting in SHEET mode: dismissals are
+	// reported eagerly here (while `open` is still true), and the consumer
+	// reacts by flipping `open` to false. When the resulting open-false edge
+	// arrives at DialogSheet, `onCloseNotify` must not report the same close a
+	// second time. Modal mode never sets it, so behavior there is unchanged.
 	const cancelRequested = { current: false }
+	const closeInFlight = { current: false }
 
 	const handleOpenChange = (open)=> {
 		if (!open) {
@@ -229,13 +127,36 @@ const Dialog = (props)=> {
 		local.onOpenChange?.(open)
 	}
 
-const handleCancel = ()=> {
-	cancelRequested.current = true
-	handleOpenChange(false)
-}
+	const handleCancel = ()=> {
+		cancelRequested.current = true
+		closeInFlight.current = true
+		handleOpenChange(false)
+	}
 
 	const handleConfirm = ()=> {
 		local.onConfirm?.()
+	}
+
+	// Sheet-mode wiring (see `cancelRequested` / `closeInFlight` above).
+	const notifyOpen = ()=> {
+		closeInFlight.current = false
+		handleOpenChange(true)
+	}
+
+	const notifyClose = ()=> {
+		if (closeInFlight.current) {
+			// Already reported by the dismissal/cancel path.
+			closeInFlight.current = false
+			return
+		}
+		// Consumer-driven close (e.g. right after `onConfirm`).
+		handleOpenChange(false)
+	}
+
+	const dismiss = ()=> {
+		cancelRequested.current = true
+		closeInFlight.current = true
+		handleOpenChange(false)
 	}
 
 	const isSheet = local.mode === 'sheet'
@@ -280,6 +201,25 @@ const handleCancel = ()=> {
 		console.warn('[Dialog] sheet mode requires a title; use BottomSheet for header-less content.')
 	}
 
+	if (isSheet) {
+		return (
+			<DialogSheet
+				className={local.class}
+				closeOnInteractOutside={local.closeOnInteractOutside}
+				children={local.children}
+				footer={footerContent}
+				icon={local.icon}
+				lazyMount={local.lazyMount}
+				onCloseNotify={notifyClose}
+				onDismiss={dismiss}
+				onOpenEdge={notifyOpen}
+				open={local.open}
+				title={local.title}
+				unmountOnExit={local.unmountOnExit}
+			/>
+		)
+	}
+
 	return (
 		<ArkDialog.Root
 			open={read(local.open)}
@@ -293,22 +233,22 @@ const handleCancel = ()=> {
 			{...rest}
 		>
 			<DialogPortal>
-				<ArkDialog.Backdrop className={isSheet ? backdropSheetClass : backdropModalClass} />
-				<ArkDialog.Positioner className={isSheet ? positionerSheetClass : positionerModalClass}>
-					<ArkDialog.Content className={local.class ? `${isSheet ? contentSheetClass : contentModalClass} ${local.class}` : (isSheet ? contentSheetClass : contentModalClass)}>
+				<ArkDialog.Backdrop className={backdropModalClass} />
+				<ArkDialog.Positioner className={positionerModalClass}>
+					<ArkDialog.Content className={local.class ? `${contentModalClass} ${local.class}` : contentModalClass}>
 					<div className={headerClass} data-scope='dialog' data-part='header'>
 						<div className={titleWrapClass}>
 							{local.icon && <Icon className={titleIconClass} size={20} svg={local.icon} />}
 							{local.title && <ArkDialog.Title className={titleClass}>{local.title}</ArkDialog.Title>}
 						</div>
-						{!isSheet && (local.closeable ?? true) && (
+						{(local.closeable ?? true) && (
 							<ArkDialog.CloseTrigger aria-label='Close' className={closeBtnClass} onClick={() => { cancelRequested.current = true }}>×</ArkDialog.CloseTrigger>
 						)}
 					</div>
 					<div className={bodyClass} data-scope='dialog' data-part='body'>
 						{local.children}
 					</div>
-					<div className={isSheet ? `${footerClass} ${footerSheetClass}` : footerClass} data-scope='dialog' data-part='footer'>
+					<div className={footerClass} data-scope='dialog' data-part='footer'>
 						{footerContent}
 					</div>
 					</ArkDialog.Content>
