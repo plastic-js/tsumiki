@@ -111,6 +111,7 @@ const Input = (props = {})=> {
 
   const showPassword = createSignal(false)
   const isPassword = read(local.type) === 'password'
+  let inputEl = null
 
   const hasPrefix = () => read(local.prefix) != null
   const hasSuffix = () => read(local.suffix) != null || isPassword
@@ -143,9 +144,17 @@ const Input = (props = {})=> {
     return showPassword() ? 'text' : 'password'
   }
 
+  const handleAffixPointerDown = (e) => {
+    if (effectiveDisabled()) return
+    const target = e.target
+    if (target && target.closest && target.closest('button, a, input, select, textarea, label, [contenteditable]')) return
+    e.preventDefault()
+    inputEl?.focus()
+  }
+
   const renderAffix = (content)=> {
     if (content == null) return null
-    return <span className={affixClass}>{content}</span>
+    return <span className={affixClass} onPointerDown={handleAffixPointerDown}>{content}</span>
   }
 
   return (
@@ -156,7 +165,10 @@ const Input = (props = {})=> {
         return renderAffix(p)
       }}
       <ark.input
-        ref={local.ref}
+        ref={(el) => {
+          inputEl = el
+          if (typeof local.ref === 'function') local.ref(el)
+        }}
         {...(field ? field.getInputProps() : {})}
         {...rest}
         type={inputType}
