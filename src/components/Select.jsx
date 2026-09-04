@@ -104,7 +104,14 @@ const listClass = css({
 	minHeight: 0,
 	overflowY: 'auto',
 	WebkitOverflowScrolling: 'touch',
-	padding: '0 8px calc(8px + env(safe-area-inset-bottom, 0px))',
+	// Bottom clearance for the home indicator uses the same `max()` strategy
+	// and the same constant as the Dialog sheet panel
+	// (`--tsu-container-padding-lg`): it keeps the list's regular bottom rhythm
+	// on devices without an inset (env() = 0 → 24px) and expands to the
+	// safe-area height on iOS. It is NOT summed (`calc(constant + env())`) —
+	// CSS padding never collapses, and stacking the two would leave an
+	// oversized gap under the last row on inset devices.
+	padding: '0 8px max(var(--tsu-container-padding-lg), env(safe-area-inset-bottom, 0px))',
 })
 
 const itemClass = css({
@@ -407,7 +414,7 @@ const List = ()=> {
 	}
 
 	return (
-		<div {...part('list')} ref={holdRef} className={listClass} style={()=> heldHeight() ? { minHeight: `${heldHeight()}px` } : undefined}>
+		<div {...part('list')} ref={holdRef} className={`${listClass} scroller`} style={()=> heldHeight() ? { minHeight: `${heldHeight()}px` } : undefined}>
 			{()=> ctx.filter && (
 				<div className={filterWrapperClass}>
 					<span aria-hidden='true' className={filterIconClass}>
