@@ -368,3 +368,47 @@
 .header-theme-btn:active {
     background: var(--tsu-accent-3);
 }
+
+/* ── PhoneInput demo ────────────────────────────────────────────────── */
+.ph-contact-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 1.5px dashed var(--tsu-neutral-7);
+    border-radius: var(--tsu-radius-l2-md);
+    padding: 12px;
+    margin-top: 8px;
+}
+
+.ph-icon-tile {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--tsu-neutral-3);
+    border-radius: var(--tsu-radius-l1-md);
+    color: var(--tsu-accent-9);
+}
+
+.ph-icon-tile svg {
+    width: 18px;
+    height: 18px;
+    display: block;
+}
+
+.ph-field-wrap {
+    flex: 1;
+    min-width: 0;
+}
+
+.ph-stack-gap {
+    height: 12px;
+}
+
+.ph-send-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
+}
