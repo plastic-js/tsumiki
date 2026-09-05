@@ -2,12 +2,7 @@ import { css } from '@emotion/css'
 import { splitProps } from '@plastic-js/plastic'
 import Input from './Input.jsx'
 
-const affixPrefixClass = css({
-  color: 'var(--tsu-fg)',
-})
-
 const affixSuffixClass = css({
-  color: 'var(--tsu-fg)',
   fontWeight: 'var(--tsu-font-weight-semibold)',
   paddingLeft: '10px',
   marginLeft: 'var(--tsu-spacing-xs)',
@@ -31,7 +26,7 @@ const MoneyInput = (props)=> {
       invalid={local.invalid}
       disabled={local.disabled}
       placeholder={local.placeholder}
-      prefix={()=> <span className={affixPrefixClass}>{local.currency ?? '₱'}</span>}
+      prefix={()=> <span>{local.currency ?? '₱'}</span>}
       suffix={()=> {
         const affix = read(local.affix)
         if (!affix) return null

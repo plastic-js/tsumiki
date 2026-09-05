@@ -3,8 +3,6 @@ import { mergeProps, splitProps } from '@plastic-js/plastic'
 import Input from './Input.jsx'
 
 const countryCodeClass = css({
-  color: 'var(--tsu-fg)',
-  fontWeight: 'var(--tsu-font-weight-medium)',
   fontVariantNumeric: 'tabular-nums',
 })
 
