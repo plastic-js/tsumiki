@@ -1,0 +1,24 @@
+/* ── Overscroll utility: .scroller ──────────────────────────────────
+   Marks a scroll region that should keep its native rubber-band
+   overscroll on iOS. overscroll-behavior: contain lets the region
+   bounce at its top/bottom edges but never chains the gesture past it.
+
+   It is a plain global class (not an emotion class) so any scroll
+   region — library- or app-owned — can opt in by adding `scroller`
+   next to its own class:
+
+     <div className={`${myScrollClass} scroller`}>
+
+   Conventions:
+   - Do NOT set overscroll-behavior in a region's own class when it also
+     uses .scroller: an emotion class and .scroller would tie on
+     specificity and fall back to stylesheet order.
+   - A global hard-edge default (e.g. div { overscroll-behavior: none })
+     is an app-shell decision and is intentionally NOT part of the
+     library reset; this rule only affects elements that opt in.
+
+   See docs/api.md (§ Scroll overscroll — the `.scroller` class).
+*/
+.scroller {
+  overscroll-behavior: contain;
+}
