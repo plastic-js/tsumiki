@@ -144,17 +144,16 @@ const Input = (props = {})=> {
     return showPassword() ? 'text' : 'password'
   }
 
-  const handleAffixPointerDown = (e) => {
+  const handleAffixPointerUp = (e) => {
     if (effectiveDisabled()) return
     const target = e.target
     if (target && target.closest && target.closest('button, a, input, select, textarea, label, [contenteditable]')) return
-    e.preventDefault()
     inputEl?.focus()
   }
 
   const renderAffix = (content)=> {
     if (content == null) return null
-    return <span className={affixClass} onPointerDown={handleAffixPointerDown}>{content}</span>
+    return <span className={affixClass} onPointerUp={handleAffixPointerUp}>{content}</span>
   }
 
   return (
